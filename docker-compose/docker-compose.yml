@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+  authserver:
+    image: authserver:latest
+    container_name: authserver
+    depends_on:
+      - authserverdb
+    build:
+      context: ..
+      dockerfile: AuthService/WebApi/Dockerfile      
+      
+  # webgateway:
+    # image: webgateway:latest
+    # container_name: webgateway
+    # depends_on:
+      # - authserverdb
+      # - authserver
+    # build:
+      # context: ..
+      # dockerfile: Gateways/WebGateway/Dockerfile
+
+  authserverdb:
+    image: postgres:latest
+    container_name: authserverdb    
+    restart: always
+    volumes:
+      - db_volume:/var/lib/authpostgresql/data
+
+volumes:
+  db_volume:

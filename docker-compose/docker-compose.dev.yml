@@ -1,0 +1,40 @@
+version: '3.4'
+
+services:
+  authserver:
+    environment:
+      AS_ConnectionStrings__DB_CONNECTION_STRING: "host=authserverdb;port=5432;database=IdentityDb;username=asuser;password=aspass"    
+      ASPNETCORE_ENVIRONMENT: "Development"
+    ports:
+      - 5230:80
+    networks:
+      - itelli-network
+        
+  # webgateway:
+    # environment:
+        # ASPNETCORE_ENVIRONMENT: "Development"
+    # ports:
+      # - 5235:80
+    # networks:
+      # - itelli-network
+
+  authserverdb:
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      POSTGRES_USER: "asuser"
+      POSTGRES_PASSWORD: "aspass"
+      POSTGRES_DB: "IdentityDb"
+    ports:
+      - 5432:5432
+    networks:
+      - itelli-network
+
+networks:
+  itelli-network:
+    driver: bridge 
+    
+#  docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#  docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+# docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build authserver
+
+# dotnet ef migrations add "SampleMigration" --project src\Infrastructure --startup-project src\WebUI --output-dir Persistence\Migrations
